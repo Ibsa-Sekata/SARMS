@@ -1,178 +1,134 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import { Toaster } from 'react-hot-toast'
-import { AuthProvider, useAuth } from './contexts/AuthContext'
-import Login from './pages/Login'
-import Dashboard from './pages/Dashboard'
-import StudentRoster from './pages/StudentRoster'
-import MarkEntry from './pages/MarkEntry'
-import StudentManagement from './pages/StudentManagement'
-import HomeroomApproval from './pages/HomeroomApproval'
-import ManageTeachers from './pages/Admin/ManageTeachers'
-import ManageStudents from './pages/Admin/ManageStudents'
-import ManageDepartments from './pages/Admin/ManageDepartments'
-import ManageClasses from './pages/Admin/ManageClasses'
-import AcademicSettings from './pages/Admin/AcademicSettings'
-import './App.css'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { TeacherClassProvider } from "./contexts/TeacherClassContext";
+import AppShell from "./components/AppShell";
+import Login from "./views/Login";
+import Dashboard from "./views/Dashboard";
+import StudentRoster from "./views/StudentRoster";
+import MarkEntry from "./views/MarkEntry";
+import HomeroomApproval from "./views/HomeroomApproval";
+import StudentManagement from "./views/StudentManagement";
+import ManageTeachers from "./views/Admin/ManageTeachers";
+import ManageStudents from "./views/Admin/ManageStudents";
+import ManageDepartments from "./views/Admin/ManageDepartments";
+import ManageClasses from "./views/Admin/ManageClasses";
+import AcademicSettings from "./views/Admin/AcademicSettings";
+import "./App.css";
 
-// Protected Route Component
-const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth()
-  
+const LoadingScreen = () => (
+  <div className="loading-container app-loading-full">
+    <div className="loading-spinner" />
+    <p>Loading…</p>
+  </div>
+);
+
+const ProtectedLayout = () => {
+  const { user, loading } = useAuth();
+
   if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-        <p>Loading...</p>
-      </div>
-    )
+    return <LoadingScreen />;
   }
-  
-  return user ? children : <Navigate to="/login" />
-}
 
-// Public Route Component (redirect if already logged in)
+  if (!user) {
+    return <Navigate to="/login/teacher" replace />;
+  }
+
+  return (
+    <TeacherClassProvider>
+      <AppShell>
+        <Outlet />
+      </AppShell>
+    </TeacherClassProvider>
+  );
+};
+
 const PublicRoute = ({ children }) => {
-  const { user, loading } = useAuth()
-  
+  const { user, loading } = useAuth();
+
   if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-        <p>Loading...</p>
-      </div>
-    )
+    return <LoadingScreen />;
   }
-  
-  return user ? <Navigate to="/dashboard" /> : children
-}
+
+  return user ? <Navigate to="/dashboard" replace /> : children;
+};
 
 function App() {
   return (
     <AuthProvider>
       <Router>
         <div className="App">
-          <Routes>
-            {/* Public Routes */}
-            <Route 
-              path="/login" 
-              element={
-                <PublicRoute>
-                  <Login />
-                </PublicRoute>
-              } 
-            />
-            
-            {/* Protected Routes */}
-            <Route 
-              path="/dashboard" 
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } 
-            />
-            
-            <Route 
-              path="/roster" 
-              element={
-                <ProtectedRoute>
-                  <StudentRoster />
-                </ProtectedRoute>
-              } 
-            />
-            
-            <Route 
-              path="/marks" 
-              element={
-                <ProtectedRoute>
-                  <MarkEntry />
-                </ProtectedRoute>
-              } 
-            />
-            
-            <Route 
-              path="/students" 
-              element={
-                <ProtectedRoute>
-                  <StudentManagement />
-                </ProtectedRoute>
-              } 
-            />
-            
-            <Route 
-              path="/homeroom/approval" 
-              element={
-                <ProtectedRoute>
-                  <HomeroomApproval />
-                </ProtectedRoute>
-              } 
-            />
-            
-            <Route 
-              path="/admin/teachers" 
-              element={
-                <ProtectedRoute>
-                  <ManageTeachers />
-                </ProtectedRoute>
-              } 
-            />
-            
-            <Route 
-              path="/admin/students" 
-              element={
-                <ProtectedRoute>
-                  <ManageStudents />
-                </ProtectedRoute>
-              } 
-            />
-            
-            <Route 
-              path="/admin/departments" 
-              element={
-                <ProtectedRoute>
-                  <ManageDepartments />
-                </ProtectedRoute>
-              } 
-            />
-            
-            <Route 
-              path="/admin/classes" 
-              element={
-                <ProtectedRoute>
-                  <ManageClasses />
-                </ProtectedRoute>
-              } 
-            />
-            
-            <Route 
-              path="/admin/settings" 
-              element={
-                <ProtectedRoute>
-                  <AcademicSettings />
-                </ProtectedRoute>
-              } 
-            />
-            
-            {/* Default redirect */}
-            <Route path="/" element={<Navigate to="/dashboard" />} />
-            
-            {/* 404 Route */}
-            <Route path="*" element={<Navigate to="/dashboard" />} />
-          </Routes>
-          
-          {/* Toast Notifications */}
-          <Toaster 
+          <div className="app-viewport-fill">
+            <Routes>
+              <Route
+                path="/login"
+                element={<Navigate to="/login/teacher" replace />}
+              />
+              <Route
+                path="/login/teacher"
+                element={
+                  <PublicRoute>
+                    <Login variant="teacher" />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/login/admin"
+                element={
+                  <PublicRoute>
+                    <Login variant="admin" />
+                  </PublicRoute>
+                }
+              />
+
+              <Route element={<ProtectedLayout />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/roster" element={<StudentRoster />} />
+                <Route path="/marks" element={<MarkEntry />} />
+                <Route path="/homeroom/approval" element={<HomeroomApproval />} />
+                <Route path="/students" element={<StudentManagement />} />
+                <Route path="/admin/teachers" element={<ManageTeachers />} />
+                <Route path="/admin/students" element={<ManageStudents />} />
+                <Route
+                  path="/admin/departments"
+                  element={<ManageDepartments />}
+                />
+                <Route path="/admin/classes" element={<ManageClasses />} />
+                <Route path="/admin/settings" element={<AcademicSettings />} />
+              </Route>
+
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
+          </div>
+
+          <Toaster
             position="top-right"
             toastOptions={{
               duration: 4000,
+              className: "sarms-toast",
               style: {
-                background: '#363636',
-                color: '#fff',
+                background: "var(--color-surface-elevated)",
+                color: "var(--color-text)",
+                border: "1px solid var(--color-border)",
+                boxShadow: "var(--shadow-md)",
               },
               success: {
-                duration: 3000,
-                theme: {
-                  primary: '#4aed88',
+                iconTheme: {
+                  primary: "var(--color-success)",
+                  secondary: "#fff",
+                },
+              },
+              error: {
+                iconTheme: {
+                  primary: "var(--color-danger)",
+                  secondary: "#fff",
                 },
               },
             }}
@@ -180,7 +136,7 @@ function App() {
         </div>
       </Router>
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;

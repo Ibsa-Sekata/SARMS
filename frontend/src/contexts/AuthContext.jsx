@@ -45,22 +45,35 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const login = async (username, password) => {
+  const login = async (username, password, options = {}) => {
+    const { expectedRole } = options
     try {
       setLoading(true)
       const response = await api.post('/auth/login', { username, password })
       
       if (response.data.success) {
         const { token, user } = response.data
-        
-        // Store token
+        const role = String(user?.role ?? '').toLowerCase().trim()
+
+        if (expectedRole) {
+          const want = String(expectedRole).toLowerCase().trim()
+          if (role !== want) {
+            toast.error(
+              want === 'admin'
+                ? 'This account is not an administrator. Use the teacher sign-in page.'
+                : 'This account is not a teacher. Use the administrator sign-in page.'
+            )
+            return { success: false, message: 'Role mismatch' }
+          }
+        }
+
         localStorage.setItem('token', token)
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-        
-        // Set user
+
         setUser(user)
-        
-        const displayName = user.teacher_name || user.username
+
+        const displayName =
+          role === 'admin' ? user.username : user.teacher_name || user.username
         toast.success(`Welcome back, ${displayName}!`)
         return { success: true }
       } else {

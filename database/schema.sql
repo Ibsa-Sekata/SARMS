@@ -13,9 +13,7 @@ CREATE TABLE users (
     username VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(100),
     password VARCHAR(255) NOT NULL,
-    role ENUM('admin','teacher') NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    role ENUM('admin','teacher') NOT NULL
 );
 
 ----------------------------------------------------
@@ -23,9 +21,7 @@ CREATE TABLE users (
 ----------------------------------------------------
 CREATE TABLE departments (
     department_id INT AUTO_INCREMENT PRIMARY KEY,
-    department_name VARCHAR(100) UNIQUE NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    department_name VARCHAR(100) UNIQUE NOT NULL
 );
 
 ----------------------------------------------------
@@ -37,8 +33,6 @@ CREATE TABLE teachers (
     email VARCHAR(100),
     department_id INT,
     user_id INT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (department_id) REFERENCES departments(department_id) ON DELETE SET NULL,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
@@ -50,8 +44,6 @@ CREATE TABLE subjects (
     subject_id INT AUTO_INCREMENT PRIMARY KEY,
     subject_name VARCHAR(100) NOT NULL,
     department_id INT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (department_id) REFERENCES departments(department_id) ON DELETE SET NULL
 );
 
@@ -60,8 +52,7 @@ CREATE TABLE subjects (
 ----------------------------------------------------
 CREATE TABLE grades (
     grade_id INT AUTO_INCREMENT PRIMARY KEY,
-    grade_number INT NOT NULL UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    grade_number INT NOT NULL UNIQUE
 );
 
 ----------------------------------------------------
@@ -69,8 +60,7 @@ CREATE TABLE grades (
 ----------------------------------------------------
 CREATE TABLE sections (
     section_id INT AUTO_INCREMENT PRIMARY KEY,
-    section_name CHAR(1) NOT NULL UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    section_name CHAR(1) NOT NULL UNIQUE
 );
 
 ----------------------------------------------------
@@ -81,8 +71,6 @@ CREATE TABLE classes (
     grade_id INT,
     section_id INT,
     homeroom_teacher_id INT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (grade_id) REFERENCES grades(grade_id) ON DELETE CASCADE,
     FOREIGN KEY (section_id) REFERENCES sections(section_id) ON DELETE CASCADE,
     FOREIGN KEY (homeroom_teacher_id) REFERENCES teachers(teacher_id) ON DELETE SET NULL
@@ -97,10 +85,6 @@ CREATE TABLE students (
     gender ENUM('M','F'),
     student_code VARCHAR(20) UNIQUE,
     class_id INT,
-    date_of_birth DATE,
-    enrollment_date DATE DEFAULT (CURRENT_DATE),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (class_id) REFERENCES classes(class_id) ON DELETE SET NULL
 );
 
@@ -109,8 +93,7 @@ CREATE TABLE students (
 ----------------------------------------------------
 CREATE TABLE academic_years (
     year_id INT AUTO_INCREMENT PRIMARY KEY,
-    year_name VARCHAR(20) NOT NULL UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    year_name VARCHAR(20) NOT NULL UNIQUE
 );
 
 ----------------------------------------------------
@@ -118,8 +101,7 @@ CREATE TABLE academic_years (
 ----------------------------------------------------
 CREATE TABLE semesters (
     semester_id INT AUTO_INCREMENT PRIMARY KEY,
-    semester_name VARCHAR(20) NOT NULL UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    semester_name VARCHAR(20) NOT NULL UNIQUE
 );
 
 ----------------------------------------------------
@@ -131,7 +113,6 @@ CREATE TABLE teacher_assignments (
     subject_id INT,
     class_id INT,
     year_id INT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id) ON DELETE CASCADE,
     FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE,
     FOREIGN KEY (class_id) REFERENCES classes(class_id) ON DELETE CASCADE,
@@ -150,9 +131,6 @@ CREATE TABLE marks (
     semester_id INT,
     year_id INT,
     mark INT CHECK (mark >= 0 AND mark <= 100),
-    recorded_date DATE DEFAULT (CURRENT_DATE),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
     FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE,
     FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id) ON DELETE SET NULL,
@@ -162,6 +140,21 @@ CREATE TABLE marks (
 );
 
 ----------------------------------------------------
+-- SYSTEM SETTINGS (current year / semester for the app)
+-- Seed values align with your academic_years / semesters rows.
+----------------------------------------------------
+CREATE TABLE IF NOT EXISTS system_settings (
+    setting_id INT AUTO_INCREMENT PRIMARY KEY,
+    setting_key VARCHAR(50) UNIQUE NOT NULL,
+    setting_value VARCHAR(255) NOT NULL,
+    description VARCHAR(255),
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+INSERT IGNORE INTO system_settings (setting_key, setting_value, description) VALUES
+('current_year_id', '1', 'Current academic year ID'),
+('current_semester_id', '1', 'Current semester ID');
+---------
 -- INDEXES FOR PERFORMANCE
 ----------------------------------------------------
 CREATE INDEX idx_teachers_user ON teachers(user_id);

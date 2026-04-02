@@ -4,7 +4,8 @@ const {
     generateStudentReport,
     generateClassReport,
     getClassStatistics,
-    generateStudentRoster
+    generateStudentRoster,
+    getStoredStudentRoster,
 } = require('../controllers/reportController');
 const { protect, isHomeroomTeacher } = require('../middleware/authMiddleware');
 
@@ -22,6 +23,11 @@ router.get('/class/:id', protect, isHomeroomTeacher, generateClassReport);
 // @desc    Get class performance statistics
 // @access  Private
 router.get('/class/:id/statistics', protect, isHomeroomTeacher, getClassStatistics);
+
+// @route   GET /api/reports/roster/:classId/stored
+// @desc    Load last saved roster snapshot for class + year + semester
+// @access  Private (homeroom or admin)
+router.get('/roster/:classId/stored', protect, isHomeroomTeacher, getStoredStudentRoster);
 
 // @route   GET /api/reports/roster/:classId
 // @desc    Generate student roster for a class

@@ -29,11 +29,14 @@ api.interceptors.response.use(
         return response
     },
     (error) => {
-        if (error.response?.status === 401) {
-            // Token expired or invalid
+        // Do not redirect on 401 from login — wrong password also returns 401;
+        // redirecting would full-reload the page and hide the error toast.
+        const reqUrl = String(error.config?.url ?? '')
+        const isLoginRequest = reqUrl.includes('/auth/login')
+        if (error.response?.status === 401 && !isLoginRequest) {
             localStorage.removeItem('token')
             delete api.defaults.headers.common['Authorization']
-            window.location.href = '/login'
+            window.location.href = '/login/teacher'
         }
         return Promise.reject(error)
     }

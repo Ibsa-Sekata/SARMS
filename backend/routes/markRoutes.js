@@ -44,7 +44,7 @@ router.post('/submit-to-homeroom', protect, submitToHomeroom);
 router.get('/homeroom/submitted', protect, isHomeroomTeacher, getSubmittedMarksForHomeroom);
 
 // @route   POST /api/marks/homeroom/approve-all
-// @desc    Approve all submitted marks for homeroom teacher's class
+// @desc    Validate all subject marks are complete for class-term
 // @access  Private (Homeroom Teacher only)
 router.post('/homeroom/approve-all', protect, isHomeroomTeacher, approveAllMarks);
 

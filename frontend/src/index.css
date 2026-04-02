@@ -1,15 +1,49 @@
 /* index.css - Global styles and resets */
 
+:root {
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --color-bg: #0c1222;
+  --color-bg-soft: #111827;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f4f6fb;
+  --color-surface-elevated: #ffffff;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-border: #e2e8f0;
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-accent-teal: #0d9488;
+  --color-accent-amber: #d97706;
+  --color-accent-green: #059669;
+  --color-accent-rose: #e11d48;
+  --color-success: #10b981;
+  --color-danger: #ef4444;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 22px 50px rgba(15, 23, 42, 0.12);
+  --sidebar-w: 268px;
+  --sidebar-w-collapsed: 76px;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.6;

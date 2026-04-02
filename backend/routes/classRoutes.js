@@ -5,6 +5,7 @@ const {
     getClass,
     getClassStudents,
     createClass,
+    updateClass,
     updateHomeroomTeacher,
     deleteClass
 } = require('../controllers/classController');
@@ -19,6 +20,11 @@ router.get('/', protect, getClasses);
 // @desc    Create new class
 // @access  Private (Admin only)
 router.post('/', protect, createClass);
+
+// @route   PUT /api/classes/:id
+// @desc    Update class
+// @access  Private (Admin only)
+router.put('/:id', protect, updateClass);
 
 // @route   GET /api/classes/:id
 // @desc    Get single class

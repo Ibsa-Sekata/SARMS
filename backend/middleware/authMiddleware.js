@@ -112,8 +112,22 @@ const isSubjectTeacher = async (req, res, next) => {
     }
 };
 
+const adminOnly = (req, res, next) => {
+    const role = String(req.user?.role ?? '')
+        .trim()
+        .toLowerCase();
+    if (role !== 'admin') {
+        return res.status(403).json({
+            success: false,
+            message: 'Administrator access required'
+        });
+    }
+    next();
+};
+
 module.exports = {
     protect,
     isHomeroomTeacher,
-    isSubjectTeacher
+    isSubjectTeacher,
+    adminOnly
 };
