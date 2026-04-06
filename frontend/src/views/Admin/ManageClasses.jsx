@@ -145,6 +145,10 @@ const ManageClasses = () => {
     section_id: '',
     homeroom_teacher_id: '',
   })
+  const [newGradeNumber, setNewGradeNumber] = useState('')
+  const [newSectionLetter, setNewSectionLetter] = useState('')
+  const [creatingGrade, setCreatingGrade] = useState(false)
+  const [creatingSection, setCreatingSection] = useState(false)
   const [assignmentFormData, setAssignmentFormData] = useState({
     class_id: '',
     teacher_id: '',
@@ -212,6 +216,61 @@ const ManageClasses = () => {
       if (response.data.success) setSubjects(response.data.subjects)
     } catch (error) {
       console.error('Error loading subjects:', error)
+    }
+  }
+
+  const handleAddGrade = async () => {
+    const n = parseInt(String(newGradeNumber).trim(), 10)
+    if (!Number.isFinite(n) || n < 1) {
+      toast.error('Enter a valid grade number (e.g. 9, 10).')
+      return
+    }
+    try {
+      setCreatingGrade(true)
+      const response = await api.post('/grades', { grade_number: n })
+      if (response.data.success) {
+        toast.success(
+          response.data.existing ? `Grade ${n} was already in the list.` : `Grade ${n} added.`,
+        )
+        await loadGrades()
+        setClassFormData((prev) => ({
+          ...prev,
+          grade_id: String(response.data.grade_id),
+        }))
+        setNewGradeNumber('')
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to add grade')
+    } finally {
+      setCreatingGrade(false)
+    }
+  }
+
+  const handleAddSection = async () => {
+    const letter = String(newSectionLetter).trim()
+    if (!letter) {
+      toast.error('Enter a section letter (e.g. A, B).')
+      return
+    }
+    try {
+      setCreatingSection(true)
+      const response = await api.post('/sections', { section_name: letter })
+      if (response.data.success) {
+        const label = response.data.section_name || letter.toUpperCase().slice(0, 1)
+        toast.success(
+          response.data.existing ? `Section ${label} was already in the list.` : `Section ${label} added.`,
+        )
+        await loadSections()
+        setClassFormData((prev) => ({
+          ...prev,
+          section_id: String(response.data.section_id),
+        }))
+        setNewSectionLetter('')
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to add section')
+    } finally {
+      setCreatingSection(false)
     }
   }
 
@@ -355,7 +414,7 @@ const ManageClasses = () => {
 
   const layoutSubtitle = viewingAssignments
     ? 'Homeroom teacher and subject teachers linked to this class.'
-    : 'Create grade/section combinations, assign homeroom teachers, and map subject teachers.'
+    : 'Create grade/section combinations (add new grades or sections from the class form), assign homeroom teachers, and map subject teachers.'
 
   const openClassFormAtTop = () => {
     setShowAssignmentForm(false)
@@ -364,6 +423,8 @@ const ManageClasses = () => {
       if (!next) {
         setEditingClassId(null)
         setClassFormData({ grade_id: '', section_id: '', homeroom_teacher_id: '' })
+        setNewGradeNumber('')
+        setNewSectionLetter('')
       }
       if (next) {
         setTimeout(
@@ -470,6 +531,42 @@ const ManageClasses = () => {
                     </option>
                   ))}
                 </select>
+                <div
+                  className="admin-muted"
+                  style={{
+                    marginTop: '0.65rem',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '0.5rem',
+                    alignItems: 'center',
+                  }}
+                >
+                  <span style={{ fontSize: '0.8rem' }}>New grade:</span>
+                  <input
+                    type="number"
+                    min={1}
+                    max={99}
+                    placeholder="e.g. 11"
+                    value={newGradeNumber}
+                    onChange={(e) => setNewGradeNumber(e.target.value)}
+                    disabled={creatingGrade}
+                    style={{
+                      width: '5rem',
+                      padding: '0.35rem 0.5rem',
+                      borderRadius: 'var(--radius-sm)',
+                      border: '1px solid var(--color-border)',
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="admin-btn admin-btn--ghost"
+                    style={{ fontSize: '0.8rem', padding: '0.35rem 0.65rem' }}
+                    onClick={handleAddGrade}
+                    disabled={creatingGrade}
+                  >
+                    {creatingGrade ? '…' : 'Add grade'}
+                  </button>
+                </div>
               </div>
               <div className="form-group">
                 <label>Section</label>
@@ -485,6 +582,43 @@ const ManageClasses = () => {
                     </option>
                   ))}
                 </select>
+                <div
+                  className="admin-muted"
+                  style={{
+                    marginTop: '0.65rem',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '0.5rem',
+                    alignItems: 'center',
+                  }}
+                >
+                  <span style={{ fontSize: '0.8rem' }}>New section:</span>
+                  <input
+                    type="text"
+                    maxLength={1}
+                    placeholder="A"
+                    value={newSectionLetter}
+                    onChange={(e) => setNewSectionLetter(e.target.value.toUpperCase())}
+                    disabled={creatingSection}
+                    style={{
+                      width: '2.5rem',
+                      textAlign: 'center',
+                      padding: '0.35rem 0.5rem',
+                      borderRadius: 'var(--radius-sm)',
+                      border: '1px solid var(--color-border)',
+                      textTransform: 'uppercase',
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="admin-btn admin-btn--ghost"
+                    style={{ fontSize: '0.8rem', padding: '0.35rem 0.65rem' }}
+                    onClick={handleAddSection}
+                    disabled={creatingSection}
+                  >
+                    {creatingSection ? '…' : 'Add section'}
+                  </button>
+                </div>
               </div>
               <div className="form-group" style={{ gridColumn: '1 / -1' }}>
                 <label>Homeroom teacher</label>
