@@ -1,18 +1,31 @@
 const dotenv = require('dotenv');
+dotenv.config();
+
+const app = require('./app');
+const PORT = process.env.PORT || 5000;
+
 const {
     ensureSettingsTable,
     ensureMarksApprovalColumns,
     ensureRosterSnapshotsTable,
 } = require('./utils/initDatabase');
 
-dotenv.config();
+// Safe DB initialization
+const initDB = async () => {
+    try {
+        await Promise.all([
+            ensureSettingsTable(),
+            ensureMarksApprovalColumns(),
+            ensureRosterSnapshotsTable(),
+        ]);
 
-const app = require('./app');
-const PORT = process.env.PORT || 5000;
+        console.log("✅ Database initialization completed");
+    } catch (err) {
+        console.error("❌ Failed to initialize database:", err.message);
+    }
+};
 
-Promise.all([ensureSettingsTable(), ensureMarksApprovalColumns(), ensureRosterSnapshotsTable()]).catch((err) => {
-    console.error('Failed to initialize database:', err);
-});
+initDB();
 
 app.listen(PORT, () => {
     console.log(`🚀 SRMS Backend server running on port ${PORT}`);
