@@ -5,11 +5,15 @@ dotenv.config();
 
 // Create connection pool
 const pool = mysql.createPool({
-    host: process.env.DB_HOST
+    uri: process.env.DATABASE_URL,
     waitForConnections: true,
     connectionLimit: 10,
-    queueLimit: 0
+    queueLimit: 0,
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
+
 
 // Get promise-based connection
 const promisePool = pool.promise();
