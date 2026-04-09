@@ -875,11 +875,11 @@ const ManageClasses = () => {
                 <tbody>
                   {classAssignments.map((assignment) => (
                     <tr key={assignment.assignment_id}>
-                      <td>
+                      <td data-label="Subject">
                         <strong>{assignment.subject_name}</strong>
                       </td>
-                      <td>{assignment.teacher_name}</td>
-                      <td>
+                      <td data-label="Teacher">{assignment.teacher_name}</td>
+                      <td className="td-actions">
                         <div className="admin-actions-cell">
                           <button
                             type="button"
@@ -918,15 +918,15 @@ const ManageClasses = () => {
                 <tbody>
                   {classes.map((cls) => (
                     <tr key={cls.class_id}>
-                      <td>
+                      <td data-label="ID">
                         <span className="admin-id-badge">{cls.class_id}</span>
                       </td>
-                      <td>
+                      <td data-label="Grade">
                         <strong>Grade {cls.grade_number}</strong>
                       </td>
-                      <td>Section {cls.section_name}</td>
-                      <td>{cls.homeroom_teacher || '—'}</td>
-                      <td>
+                      <td data-label="Section">Section {cls.section_name}</td>
+                      <td data-label="Homeroom">{cls.homeroom_teacher || '—'}</td>
+                      <td className="td-actions">
                         <div className="admin-actions-cell">
                           <button
                             type="button"

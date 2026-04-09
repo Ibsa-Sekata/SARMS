@@ -2823,3 +2823,611 @@
 .approval-btn--approve {
   background: #10b981;
 }
+
+
+/* ============================================================
+   MOBILE RESPONSIVE — small phones (≤ 480px) and tablets
+   ============================================================ */
+
+/* ── Topbar: hide user name/role text on very small screens ── */
+@media (max-width: 480px) {
+  .app-topbar {
+    padding: 0.4rem 0.6rem;
+    gap: 0.5rem;
+  }
+
+  .app-topbar__meta {
+    display: none;
+  }
+
+  .app-topbar__avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+    border-radius: 10px;
+  }
+
+  .app-topbar__page {
+    font-size: 0.85rem;
+  }
+
+  .app-topbar__sub {
+    display: none;
+  }
+
+  /* Content area: tighter padding on phones */
+  .app-content {
+    padding: 0.35rem 0.5rem;
+  }
+}
+
+/* ── Sidebar: full-width on very small phones ── */
+@media (max-width: 480px) {
+  .app-sidebar {
+    width: 100vw !important;
+  }
+}
+
+/* ── Dashboard stat grid: 2 columns on phones ── */
+@media (max-width: 600px) {
+  .dash-stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.45rem;
+  }
+
+  .dash-stat-card {
+    padding: 0.6rem 0.7rem;
+    gap: 0.55rem;
+  }
+
+  .dash-stat-card__value {
+    font-size: 1.1rem;
+  }
+
+  .dash-class-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.4rem;
+  }
+
+  .dash-pipeline {
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .dash-pipeline__arrow {
+    display: none;
+  }
+
+  .dash-pipeline__item {
+    min-width: unset;
+    width: 100%;
+  }
+
+  /* Dashboard action tiles */
+  .dash-action-tiles {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.45rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .dash-stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dash-class-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Mark entry: full-width input, stacked footer ── */
+@media (max-width: 600px) {
+  .mark-entry-panel {
+    padding: 0.4rem 0.5rem;
+    border-radius: var(--radius-md);
+  }
+
+  .mark-entry-panel__head h2 {
+    font-size: 0.88rem;
+  }
+
+  .mark-entry-panel__scroll th,
+  .mark-entry-panel__scroll td {
+    padding: 0.35rem 0.4rem;
+    font-size: 0.8rem;
+  }
+
+  .mark-entry-panel__footer {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+  }
+
+  .mark-entry-panel__footer button {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0.38rem 0.6rem !important;
+    font-size: 0.78rem !important;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  /* Make mark input full-width on mobile */
+  .mark-entry-panel__scroll input[type="number"] {
+    width: 100% !important;
+    min-width: 52px;
+  }
+}
+
+/* ── Approval page ── */
+@media (max-width: 600px) {
+  .approval-page {
+    padding: 0.6rem;
+  }
+
+  .approval-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .approval-stat-card__value {
+    font-size: 1.2rem;
+  }
+
+  .approval-progress-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .approval-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.65rem;
+  }
+
+  .approval-btn {
+    flex: 1 1 auto;
+    min-width: 0;
+    text-align: center;
+    padding: 0.38rem 0.6rem;
+    font-size: 0.78rem;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+
+  /* Approval table: horizontal scroll with visual hint */
+  .approval-table-wrap {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .approval-table {
+    min-width: 400px;
+  }
+}
+
+@media (max-width: 380px) {
+  .approval-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Admin pages ── */
+@media (max-width: 600px) {
+  .admin-page__header {
+    padding: 0.65rem 0.75rem 0.75rem;
+    border-radius: var(--radius-md);
+  }
+
+  .admin-page__header-row {
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .admin-page__subtitle {
+    white-space: normal;
+    font-size: 0.78rem;
+  }
+
+  .admin-page__body {
+    gap: 0.75rem;
+  }
+
+  .admin-card {
+    padding: 0.85rem 0.9rem 1rem;
+    border-radius: var(--radius-md);
+  }
+
+  /* Table: horizontal scroll on mobile */
+  .admin-table-scroll {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .admin-data-table th,
+  .admin-data-table td {
+    padding: 0.6rem 0.65rem;
+    font-size: 0.82rem;
+  }
+
+  .admin-data-table th {
+    font-size: 0.65rem;
+  }
+
+  /* Actions cell: allow wrap on very small screens */
+  .admin-actions-cell {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  /* Toolbar: search takes full row */
+  .sarms-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sarms-toolbar__search {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .sarms-toolbar__btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.6rem 0.75rem;
+  }
+
+  /* Student group header */
+  .admin-student-group__header {
+    padding: 0.65rem 0.75rem;
+    font-size: 0.88rem;
+  }
+
+  /* Homeroom panel */
+  .admin-homeroom-panel__row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ── Student Roster page ── */
+@media (max-width: 600px) {
+  .student-roster-container {
+    padding: 0.6rem !important;
+  }
+
+  /* Roster report: horizontal scroll */
+  .roster-report {
+    padding: 0.75rem !important;
+    border-radius: var(--radius-md) !important;
+    overflow-x: visible !important;
+  }
+
+  .roster-table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 2px solid #4a90e2;
+  }
+
+  /* Remove border from table itself since wrapper has it */
+  .roster-table-scroll table {
+    border: none !important;
+    min-width: 480px;
+    font-size: 10px !important;
+  }
+
+  /* Notes: single column */
+  .roster-notes-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+
+  /* Action buttons: one row, wrap if needed */
+  .roster-actions {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    margin-top: 1rem !important;
+  }
+
+  .roster-actions button {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
+    padding: 0.38rem 0.6rem !important;
+    font-size: 0.78rem !important;
+    white-space: nowrap !important;
+    justify-content: center;
+  }
+
+  /* Empty state buttons: one row */
+  .student-roster-container > div > div[style*="display: flex"] {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+  }
+
+  .student-roster-container > div > div[style*="display: flex"] button {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
+    padding: 0.38rem 0.6rem !important;
+    font-size: 0.78rem !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* ── Manage pages (legacy .manage-container) ── */
+@media (max-width: 600px) {
+  .manage-container {
+    padding: 0.6rem;
+  }
+
+  .manage-container .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .table-container {
+    padding: 0.5rem;
+  }
+
+  .table-container th,
+  .table-container td {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.82rem;
+  }
+
+  .form-card {
+    padding: 1rem;
+  }
+}
+
+/* ── Global: touch-friendly minimum tap targets (nav only, not content buttons) ── */
+@media (max-width: 768px) {
+  .app-nav-link,
+  .app-sidebar__logout {
+    min-height: 44px;
+  }
+
+  /* Inputs: prevent iOS zoom (font-size must be ≥ 16px) */
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+
+  /* Tables: always allow horizontal scroll */
+  .table-container,
+  .admin-table-scroll,
+  .approval-table-wrap,
+  .marks-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Stats grid: 2 columns */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Action cards: 1 column */
+  .action-cards {
+    grid-template-columns: 1fr;
+  }
+
+  /* Context items: stack on mobile */
+  .context-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  /* Settings container */
+  .settings-container {
+    padding: 0.6rem;
+  }
+
+  .current-context-card {
+    padding: 1rem;
+  }
+}
+
+/* ── Topbar user info: hide name on tablets too ── */
+@media (max-width: 768px) {
+  .app-topbar__name {
+    max-width: 100px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ── Prevent horizontal overflow on the whole app ── */
+@media (max-width: 768px) {
+  .app-content > * {
+    overflow-x: hidden;
+  }
+
+  /* Allow horizontal scroll only inside scroll containers */
+  .app-content > * .admin-table-scroll,
+  .app-content > * .approval-table-wrap,
+  .app-content > * .mark-entry-panel__scroll,
+  .app-content > * .teacher-students__table-wrap,
+  .app-content > * .roster-report {
+    overflow-x: auto;
+  }
+}
+
+
+/* ============================================================
+   ADMIN TABLES — MOBILE CARD LAYOUT (≤ 640px)
+   Converts each <tr> into a stacked card so nothing is cut off.
+   Uses data-label attributes already present via CSS attr().
+   ============================================================ */
+
+@media (max-width: 640px) {
+
+  /* ── Shared: hide thead, stack each row as a card ── */
+  .admin-data-table,
+  .admin-data-table thead,
+  .admin-data-table tbody,
+  .admin-data-table th,
+  .admin-data-table td,
+  .admin-data-table tr {
+    display: block;
+  }
+
+  .admin-data-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .admin-data-table tbody tr {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    margin: 0.5rem 0.75rem;
+    padding: 0.5rem 0.65rem;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .admin-data-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .admin-data-table td {
+    border: none;
+    border-bottom: 1px solid var(--color-border);
+    padding: 0.45rem 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+    min-height: 36px;
+  }
+
+  .admin-data-table td:last-child {
+    border-bottom: none;
+    padding-top: 0.55rem;
+  }
+
+  /* Label prefix from data-label attribute */
+  .admin-data-table td::before {
+    content: attr(data-label);
+    flex-shrink: 0;
+    width: 90px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+  }
+
+  /* Actions cell: no label prefix, centered on mobile */
+  .admin-data-table td.td-actions::before {
+    display: none;
+  }
+
+  .admin-data-table td.td-actions {
+    justify-content: center;
+    padding-top: 0.5rem;
+    border-bottom: none;
+  }
+
+  /* Smaller action buttons on mobile */
+  .admin-data-table td.td-actions .admin-btn {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.78rem;
+  }
+
+  /* Remove the outer scroll wrapper — not needed with card layout */
+  .admin-table-scroll {
+    overflow-x: visible;
+  }
+
+  /* Student group header: tighter */
+  .admin-student-group__header {
+    padding: 0.55rem 0.75rem;
+  }
+
+  /* Table shell: remove overflow hidden so cards show border-radius */
+  .admin-table-shell {
+    overflow: visible;
+  }
+
+  /* Homeroom panel: stack vertically */
+  .admin-homeroom-panel__row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.65rem;
+  }
+
+  .admin-homeroom-panel__row .admin-actions-cell {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+
+/* ============================================================
+   SMALL BUTTONS — all action/bottom-of-page buttons on mobile
+   ============================================================ */
+@media (max-width: 600px) {
+
+  /* Admin page header action buttons (Add teacher, Add student, etc.) */
+  .admin-page__actions .admin-btn {
+    padding: 0.38rem 0.7rem;
+    font-size: 0.78rem;
+  }
+
+  /* Admin card submit / cancel buttons */
+  .admin-card button[type='submit'],
+  .admin-card .admin-btn {
+    padding: 0.42rem 0.85rem;
+    font-size: 0.82rem;
+  }
+
+  /* Toolbar buttons (Export CSV, Refresh) */
+  .sarms-toolbar__btn {
+    padding: 0.42rem 0.75rem;
+    font-size: 0.82rem;
+  }
+
+  /* Back button in admin header */
+  .admin-page__back {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.78rem;
+  }
+
+  /* Homeroom panel change/save/cancel */
+  .admin-homeroom-panel .admin-btn {
+    padding: 0.38rem 0.65rem;
+    font-size: 0.78rem;
+  }
+
+  /* Dashboard back button */
+  .btn-dash-back {
+    padding: 0.3rem 0.55rem;
+    font-size: 0.78rem;
+  }
+
+  /* AcademicSettings submit button */
+  .submit-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.88rem;
+  }
+
+  /* Legacy back/add buttons */
+  .back-button,
+  .add-button {
+    padding: 0.42rem 0.75rem;
+    font-size: 0.82rem;
+  }
+}

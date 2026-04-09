@@ -246,20 +246,20 @@ const ManageTeachers = () => {
             <tbody>
               {teachers.map((teacher) => (
                 <tr key={teacher.teacher_id}>
-                  <td>
+                  <td data-label="ID">
                     <span className="admin-id-badge">{teacher.teacher_id}</span>
                   </td>
-                  <td>
+                  <td data-label="Name">
                     <strong>{teacher.teacher_name}</strong>
                   </td>
-                  <td className="admin-muted">{teacher.email || '—'}</td>
-                  <td>{teacher.department_name || '—'}</td>
-                  <td>
+                  <td data-label="Email" className="admin-muted">{teacher.email || '—'}</td>
+                  <td data-label="Department">{teacher.department_name || '—'}</td>
+                  <td data-label="Username">
                     <code style={{ fontSize: '0.85rem', color: 'var(--color-primary)' }}>
                       {teacher.username || '—'}
                     </code>
                   </td>
-                  <td>
+                  <td className="td-actions">
                     <div className="admin-actions-cell">
                       <button
                         type="button"

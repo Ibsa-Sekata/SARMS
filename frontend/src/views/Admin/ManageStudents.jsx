@@ -332,15 +332,15 @@ const ManageStudents = () => {
                   <tbody>
                     {group.students.map((student) => (
                       <tr key={student.student_id}>
-                        <td>
+                        <td data-label="ID">
                           <span className="admin-id-badge">{student.student_id}</span>
                         </td>
-                        <td>
+                        <td data-label="Name">
                           <strong>{student.student_name}</strong>
                         </td>
-                        <td>{student.student_code}</td>
-                        <td>{student.gender}</td>
-                        <td>
+                        <td data-label="Code">{student.student_code}</td>
+                        <td data-label="Gender">{student.gender}</td>
+                        <td className="td-actions">
                           <div className="admin-actions-cell">
                             <button
                               type="button"

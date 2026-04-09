@@ -38,3 +38,8 @@ testConnection();
 module.exports = promisePool;
 module.exports.pool = pool;
 module.exports.testConnection = testConnection;
+
+
+
+
+

@@ -397,13 +397,13 @@ const ManageDepartments = () => {
             <tbody>
               {departments.map((dept) => (
                 <tr key={dept.department_id}>
-                  <td>
+                  <td data-label="ID">
                     <span className="admin-id-badge">{dept.department_id}</span>
                   </td>
-                  <td>
+                  <td data-label="Name">
                     <strong>{dept.department_name}</strong>
                   </td>
-                  <td>
+                  <td className="td-actions">
                     <div className="admin-actions-cell">
                       <button
                         type="button"

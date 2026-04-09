@@ -608,6 +608,7 @@ const StudentRoster = () => {
           </div>
 
           {/* Table */}
+          <div className="roster-table-scroll">
           <table style={{
             width: '100%',
             borderCollapse: 'collapse',
@@ -863,6 +864,7 @@ const StudentRoster = () => {
               ))}
             </tbody>
           </table>
+          </div>{/* end roster-table-scroll */}
 
           {/* Notes Section */}
           <div style={{
@@ -882,7 +884,7 @@ const StudentRoster = () => {
               NOTE:
             </h3>
             
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+            <div className="roster-notes-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
               <div>
                 <div style={{ marginBottom: '8px' }}>
                   <span style={{ marginRight: '8px' }}>☐</span>
@@ -918,7 +920,7 @@ const StudentRoster = () => {
           </div>
 
           {/* Action Buttons - Bottom */}
-          <div className="no-print" style={{
+          <div className="no-print roster-actions" style={{
             marginTop: '30px',
             display: 'flex',
             gap: '15px',
