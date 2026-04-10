@@ -14,7 +14,6 @@ const pool = mysql.createPool({
     }
 });
 
-
 // Get promise-based connection
 const promisePool = pool.promise();
 
@@ -38,8 +37,4 @@ testConnection();
 module.exports = promisePool;
 module.exports.pool = pool;
 module.exports.testConnection = testConnection;
-
-
-
-
 
