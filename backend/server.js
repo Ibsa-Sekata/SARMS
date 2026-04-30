@@ -4,21 +4,11 @@ dotenv.config();
 const app = require('./app');
 const PORT = process.env.PORT || 5000;
 
-const {
-    ensureSettingsTable,
-    ensureMarksApprovalColumns,
-    ensureRosterSnapshotsTable,
-} = require('./utils/initDatabase');
+const { ensureSettingsTable, ensureMarksApprovalColumns } = require('./utils/initDatabase');
 
-// Safe DB initialization
 const initDB = async () => {
     try {
-        await Promise.all([
-            ensureSettingsTable(),
-            ensureMarksApprovalColumns(),
-            ensureRosterSnapshotsTable(),
-        ]);
-
+        await Promise.all([ensureSettingsTable(), ensureMarksApprovalColumns()]);
         console.log("✅ Database initialization completed");
     } catch (err) {
         console.error("❌ Failed to initialize database:", err.message);
