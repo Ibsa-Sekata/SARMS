@@ -1,26 +1,26 @@
 const reportModel = require('../models/reportModel');
 const markModel = require('../models/markModel');
 const reportService = require('../services/reportService');
+in
+    // Shared: build roster from views (no snapshot table needed)
+    async function buildRosterResponse(classId, year_id, semester_id) {
+        const classInfo = await reportModel.findRosterClassInfo(classId, year_id, semester_id);
+        if (!classInfo) return null;
 
-// Shared: build roster from views (no snapshot table needed)
-async function buildRosterResponse(classId, year_id, semester_id) {
-    const classInfo = await reportModel.findRosterClassInfo(classId, year_id, semester_id);
-    if (!classInfo) return null;
+        const subjectRows = await reportModel.findRosterSubjectRows(classId, year_id, semester_id);
+        const studentRows = await reportModel.findRosterStudentRows(classId, year_id, semester_id);
+        const summaryRows = await reportModel.findRosterStudentSummaries(classId, year_id, semester_id);
+        const { subjects, studentsWithCalculations } = reportService.buildRosterStudents(subjectRows, studentRows, summaryRows);
 
-    const subjectRows = await reportModel.findRosterSubjectRows(classId, year_id, semester_id);
-    const studentRows = await reportModel.findRosterStudentRows(classId, year_id, semester_id);
-    const summaryRows = await reportModel.findRosterStudentSummaries(classId, year_id, semester_id);
-    const { subjects, studentsWithCalculations } = reportService.buildRosterStudents(subjectRows, studentRows, summaryRows);
-
-    return {
-        class_info: classInfo,
-        subjects,
-        students: studentsWithCalculations,
-        total_students: studentsWithCalculations.length,
-        passed_students: studentsWithCalculations.filter((s) => s.status === 'PASS').length,
-        failed_students: studentsWithCalculations.filter((s) => s.status === 'FAIL').length,
-    };
-}
+        return {
+            class_info: classInfo,
+            subjects,
+            students: studentsWithCalculations,
+            total_students: studentsWithCalculations.length,
+            passed_students: studentsWithCalculations.filter((s) => s.status === 'PASS').length,
+            failed_students: studentsWithCalculations.filter((s) => s.status === 'FAIL').length,
+        };
+    }
 
 const generateStudentReport = async (req, res) => {
     try {
