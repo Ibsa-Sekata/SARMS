@@ -1,45 +1,12 @@
 const db = require('../config/db');
 
 async function findAllWithDetails() {
-    const [classes] = await db.execute(`
-        SELECT 
-            c.class_id,
-            c.grade_id,
-            c.section_id,
-            c.homeroom_teacher_id,
-            g.grade_number,
-            sec.section_name,
-            t.teacher_id,
-            t.teacher_name as homeroom_teacher
-        FROM classes c
-        JOIN grades g ON c.grade_id = g.grade_id
-        JOIN sections sec ON c.section_id = sec.section_id
-        LEFT JOIN teachers t ON c.homeroom_teacher_id = t.teacher_id
-        ORDER BY c.class_id
-    `);
+    const [classes] = await db.execute(`SELECT * FROM v_class_enriched ORDER BY class_id`);
     return classes;
 }
 
 async function findById(id) {
-    const [classes] = await db.execute(
-        `
-        SELECT 
-            c.class_id,
-            c.grade_id,
-            c.section_id,
-            c.homeroom_teacher_id,
-            g.grade_number,
-            sec.section_name,
-            t.teacher_id,
-            t.teacher_name as homeroom_teacher
-        FROM classes c
-        JOIN grades g ON c.grade_id = g.grade_id
-        JOIN sections sec ON c.section_id = sec.section_id
-        LEFT JOIN teachers t ON c.homeroom_teacher_id = t.teacher_id
-        WHERE c.class_id = ?
-    `,
-        [id]
-    );
+    const [classes] = await db.execute(`SELECT * FROM v_class_enriched WHERE class_id = ?`, [id]);
     return classes[0] || null;
 }
 
@@ -69,30 +36,12 @@ async function findByGradeAndSection(grade_id, section_id) {
 }
 
 async function findHomeroomClassForTeacher(teacherId) {
-    const [teacherClass] = await db.execute(
-        `
-        SELECT c.class_id, g.grade_number, sec.section_name
-        FROM classes c
-        JOIN grades g ON c.grade_id = g.grade_id
-        JOIN sections sec ON c.section_id = sec.section_id
-        WHERE c.homeroom_teacher_id = ?
-    `,
-        [teacherId]
-    );
+    const [teacherClass] = await db.execute(`SELECT * FROM v_class_enriched WHERE homeroom_teacher_id = ?`, [teacherId]);
     return teacherClass[0] || null;
 }
 
 async function findHomeroomClassForTeacherExcludingClass(teacherId, excludeClassId) {
-    const [teacherClass] = await db.execute(
-        `
-        SELECT c.class_id, g.grade_number, sec.section_name
-        FROM classes c
-        JOIN grades g ON c.grade_id = g.grade_id
-        JOIN sections sec ON c.section_id = sec.section_id
-        WHERE c.homeroom_teacher_id = ? AND c.class_id != ?
-    `,
-        [teacherId, excludeClassId]
-    );
+    const [teacherClass] = await db.execute(`SELECT * FROM v_class_enriched WHERE homeroom_teacher_id = ? AND class_id != ?`, [teacherId, excludeClassId]);
     return teacherClass[0] || null;
 }
 
