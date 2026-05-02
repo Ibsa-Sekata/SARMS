@@ -2,12 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-app.use(cors({
-    origin: 'https://sarms.vercel.app',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
-}));
-
+app.use(cors("http://localhost:5173/"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
