@@ -154,6 +154,24 @@ CREATE TABLE IF NOT EXISTS system_settings (
 INSERT IGNORE INTO system_settings (setting_key, setting_value, description) VALUES
 ('current_year_id', '1', 'Current academic year ID'),
 ('current_semester_id', '1', 'Current semester ID');
+
+----------------------------------------------------
+-- MARKS LOG (audit trail for all mark changes)
+----------------------------------------------------
+CREATE TABLE IF NOT EXISTS marks_log (
+    log_id      INT AUTO_INCREMENT PRIMARY KEY,
+    mark_id     INT,
+    student_id  INT,
+    subject_id  INT,
+    teacher_id  INT,
+    year_id     INT,
+    semester_id INT,
+    old_mark    INT,
+    new_mark    INT,
+    action      VARCHAR(10) NOT NULL,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 ---------
 -- INDEXES FOR PERFORMANCE
 ----------------------------------------------------
