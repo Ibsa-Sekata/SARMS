@@ -2,39 +2,21 @@ const db = require('../config/db');
 const bcrypt = require('bcryptjs');
 
 async function findAllWithUserDept() {
-    const [teachers] = await db.execute(`
-        SELECT 
-            t.teacher_id,
-            t.teacher_name,
-            t.email,
-            d.department_id,
-            d.department_name,
-            u.username,
-            u.role
-        FROM teachers t
-        LEFT JOIN departments d ON t.department_id = d.department_id
-        LEFT JOIN users u ON t.user_id = u.user_id
-        ORDER BY t.teacher_id
-    `);
+    // Uses view: v_teacher_full
+    const [teachers] = await db.execute(
+        `SELECT teacher_id, teacher_name, email, department_id, department_name, username, role
+         FROM v_teacher_full
+         ORDER BY teacher_id`
+    );
     return teachers;
 }
 
 async function findById(id) {
+    // Uses view: v_teacher_full
     const [teachers] = await db.execute(
-        `
-        SELECT 
-            t.teacher_id,
-            t.teacher_name,
-            t.email,
-            d.department_id,
-            d.department_name,
-            u.username,
-            u.role
-        FROM teachers t
-        LEFT JOIN departments d ON t.department_id = d.department_id
-        LEFT JOIN users u ON t.user_id = u.user_id
-        WHERE t.teacher_id = ?
-    `,
+        `SELECT teacher_id, teacher_name, email, department_id, department_name, username, role
+         FROM v_teacher_full
+         WHERE teacher_id = ?`,
         [id]
     );
     return teachers[0] || null;
